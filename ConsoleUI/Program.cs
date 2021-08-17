@@ -1,5 +1,7 @@
 ﻿using Business.Concrete;
+using DataAccess.Concrete.EntitiFramework;
 using DataAccess.Concrete.InMemory;
+using Entities.Concrete;
 using System;
 
 namespace ConsoleUI
@@ -8,11 +10,27 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
-            foreach (var car in carManager.GetAll())
+            CarTest();
+        }
+        private static void CarTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var result = carManager.GetCarDetails();
+            if (result.Success == true)
             {
-                Console.WriteLine(car.Description);
+                foreach (var c in result.Data)
+
+                {
+                    Console.WriteLine(c.CarName + "/" + c.ColorName + "/" + c.BrandName);
+                }
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+
         }
     }
 }
+
